@@ -45,6 +45,11 @@ pacstrap /mnt base base-devel bash-completion dosfstools
 genfstap -Lp /mnt >> /mnt/etc/fstab
 
 # Set flags for SSD
-awk '/defaults/ {gsub("defaults","defaults,noatime,discard")}' /etc/fstab >> /etc/fstab.ssd
-mv /etc/fstab /etc/fstab.bck
-mv /etc/fstab.ssd /etc/fstab
+awk '/defaults/ {gsub("defaults","defaults,noatime,discard")}' /mnt/etc/fstab >> /mnt/etc/fstab.ssd
+mv /mnt/etc/fstab /mnt/etc/fstab.bck
+mv /mnt/etc/fstab.ssd /mnt/etc/fstab
+
+# Download the next script
+git clone https://github.com/themoses/configs /mnt/root
+# chroot into system
+arch-chroot mnt/ /root/config-arch.sh
