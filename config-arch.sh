@@ -36,7 +36,7 @@ useradd -m -s /bin/zsh -U -g wheel, audio, video, games, power
 sed '/s/#%wheel  ALL=(ALL)       ALL/%wheel  ALL=(ALL)       ALL' /etc/sudoers
 
 # Install tools
-pacman -S acpid dbus avahi cups cronie --no-confirm
+pacman -S acpid dbus avahi cups cronie pacaur networkmanager --no-confirm
 systemctl enable acpid avahi-daemon cronie
 
 # Install Xorg
@@ -52,7 +52,12 @@ echo >>      Option "XkbVariant" "nodeadkeys" /etc/X11/xorg.conf.d/20-keyboard.c
 echo >>EndSection /etc/X11/xorg.conf.d/20-keyboard.conf
 
 # Install Video Driver
-
+pacman -S nvidia --no-confirm
 
 # Install MATE
-pacman -S
+pacman -S lightdm lightdm-gtk-greeter alsa pulseaudio-alsa mate network-manager-applet
+
+systemctl enable lightdm networkmanager
+
+# Install Steam
+#pacaur -S ttf-ms-win10
