@@ -45,9 +45,9 @@ then
 mkfs.fat -F 32 /dev/sda1
 fatlabel /dev/sda1 BOOT
 else
-mkfs.xfs -L BOOT /dev/sda1
-mkswap -L SWAP /dev/sda2
-mkfs.xfs -L ROOT /dev/sda3
+mkfs.xfs -f -L BOOT /dev/sda1
+mkswap -f -L SWAP /dev/sda2
+mkfs.xfs -f -L ROOT /dev/sda3
 fi
 
 # Mount the partitions to /mnt
