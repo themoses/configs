@@ -3,11 +3,19 @@
 # This script is part 2 of bootstrapping an Archlinux installation and will be run after the arch-chroot command.
 # Part 1 can be found at install-arch.sh
 
+# Install tools
+pacman -Sy reflector --no-confirm
+reflector --verbose --country 'Germany' -l 200 -p https --sort rate --save /etc/pacman.d/mirrorlist
+pacman -Sy vim zsh grub --no-confirm
+
 # Set hostname
 echo lolwut-arch > /etc/hostname
 
 # Set language
 echo LANG=en_US.UTF-8 > /etc/locale.conf
+sed '/s/#en_US ISO-8859-1/en_US ISO-8859-1' /etc/locale.gen
+sed '/s/#en_US.UTF-8/en_US.UTF-8' /etc/locale.gen
+locale-gen
 
 # Set keyboard binding
 echo KEYMAP=de_CH-latin1 > /etc/vconsole.conf
@@ -25,18 +33,17 @@ pacman -Syu
 mkinitcpio -p linux
 
 # Install bootloader
-pacman -S grub --no-confirm
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Adding user
-useradd -m -s /bin/zsh -U -g wheel, audio, video, games, power
+useradd -m -s /bin/zsh -U -g wheel, audio, video, power moses
  
 # Adding sudo access
 sed '/s/#%wheel  ALL=(ALL)       ALL/%wheel  ALL=(ALL)       ALL' /etc/sudoers
 
 # Install tools
-pacman -S acpid dbus avahi cups cronie pacaur networkmanager --no-confirm
+pacman -S acpid dbus avahi cups cronie networkmanager --no-confirm
 systemctl enable acpid avahi-daemon cronie
 
 # Install Xorg
@@ -52,12 +59,12 @@ echo >>      Option "XkbVariant" "nodeadkeys" /etc/X11/xorg.conf.d/20-keyboard.c
 echo >>EndSection /etc/X11/xorg.conf.d/20-keyboard.conf
 
 # Install Video Driver
-pacman -S nvidia --no-confirm
+#pacman -S nvidia --no-confirm
 
 # Install MATE
-pacman -S lightdm lightdm-gtk-greeter alsa pulseaudio-alsa mate network-manager-applet
+pacman -S lightdm lightdm-gtk-greeter alsa pulseaudio-alsa mate network-manager-applet firefox
 
-systemctl enable lightdm networkmanager
+systemctl enable lightdm NetworkManager
 
 # Install Steam
 #pacaur -S ttf-ms-win10
