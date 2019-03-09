@@ -33,7 +33,8 @@ pacman -Syu
 mkinitcpio -p linux
 
 # Install bootloader
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
+#grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
+grub-install /dev/sda1
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Adding user
