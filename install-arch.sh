@@ -23,21 +23,21 @@ pacman -Sy parted reflector dosfstools --noconfirm
 if [[ $MODE == "efi" ]]
 then
 # Create GPT partitions for UEFI install
-parted /dev/sda mklabel GPT
-parted /dev/sda mkpart primary fat32 1MiB 551MiB
-parted /dev/sda set 1 esp on
+parted --script /dev/sda mklabel GPT
+parted --script /dev/sda mkpart primary fat32 1MiB 551MiB
+parted --script /dev/sda set 1 esp on
 else
 # Create MBR partitions
-parted /dev/sda mklabel msdos
-parted /dev/sda mkpart primary xfs 1MiB 551MiB
-parted /dev/sda set 1 esp on
+parted --script /dev/sda mklabel msdos
+parted --script /dev/sda mkpart primary xfs 1MiB 551MiB
+parted --script /dev/sda set 1 esp on
 fi
 
 # Create SWAP
-parted /dev/sda mkpart primary linux-swap 551MiB 2.5GiB
+parted --script /dev/sda mkpart primary linux-swap 551MiB 2.5GiB
 
 # Create ROOT
-parted /dev/sda mkpart primary xfs 2.5GiB 100%
+parted --script /dev/sda mkpart primary xfs 2.5GiB 100%
 
 if [[ $MODE == "efi" ]]
 then
