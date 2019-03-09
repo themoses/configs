@@ -6,7 +6,7 @@
 # Install tools
 pacman -Sy reflector --no-confirm
 reflector --verbose --country 'Germany' -l 200 -p https --sort rate --save /etc/pacman.d/mirrorlist
-pacman -Sy vim zsh grub --no-confirm
+pacman -Sy vim zsh grub git --no-confirm
 
 # Set hostname
 echo lolwut-arch > /etc/hostname
