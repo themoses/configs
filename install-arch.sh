@@ -2,21 +2,36 @@
 # This script bootstraps an Archlinux UEFI installation with MATE Desktop
 
 # Set CLI arguments
-if [ -n "$1" ]; then
-DISK=$1
+
+if [[ "$@" == "efi" ]]
+then
+    MODE=efi
+else
+    MODE=bios
 fi
 
-if [ -n "$2" ]; then
-SWAP=$2
+if [[ "$@" == "ssd" ]]
+then
+    HARDDISK=ssd
+else
+    HARDDISK=hdd
 fi
 
 # Make sure the tools are installed
-pacman -S parted reflector --noconfirm
+pacman -Sy parted reflector dosfstools --noconfirm
 
+if [[ $MODE == "efi" ]]
+then
 # Create GPT partitions for UEFI install
 parted /dev/sda mklabel GPT
 parted /dev/sda mkpart primary fat32 1MiB 551MiB
 parted /dev/sda set 1 esp on
+else
+# Create MBR partitions
+parted /dev/sda mklabel msdos
+parted /dev/sda mkpart primary xfs 1MiB 551MiB
+parted /dev/sda set 1 esp on
+fi
 
 # Create SWAP
 parted /dev/sda mkpart primary linux-swap 551MiB 2.5GiB
@@ -24,10 +39,16 @@ parted /dev/sda mkpart primary linux-swap 551MiB 2.5GiB
 # Create ROOT
 parted /dev/sda mkpart primary xfs 2.5GiB 100%
 
+if [[ $MODE == "efi" ]]
+then
 # Create filesystem
-mkfs.fat -F 32 -L BOOT /dev/sda1
+mkfs.fat -F 32 /dev/sda1
+fatlabel /dev/sda1 BOOT
+else
+mkfs.xfs -L BOOT /dev/sda1
 mkswap -L SWAP /dev/sda2
 mkfs.xfs -L ROOT /dev/sda3
+fi
 
 # Mount the partitions to /mnt
 mount -L ROOT /mnt
@@ -44,12 +65,14 @@ pacstrap /mnt base base-devel bash-completion dosfstools
 # Generate fstab
 genfstap -Lp /mnt >> /mnt/etc/fstab
 
+if [[ $HARDDSIKS == "ssd" ]]
+then
 # Set flags for SSD
 awk '/defaults/ {gsub("defaults","defaults,noatime,discard")}' /mnt/etc/fstab >> /mnt/etc/fstab.ssd
 mv /mnt/etc/fstab /mnt/etc/fstab.bck
 mv /mnt/etc/fstab.ssd /mnt/etc/fstab
+fi
 
-# Download the next script
-git clone https://github.com/themoses/configs /mnt/root
 # chroot into system
-arch-chroot mnt/ /root/config-arch.sh
+echo "ready for arch-chroot"
+#arch-chroot mnt/ /root/config-arch.sh
