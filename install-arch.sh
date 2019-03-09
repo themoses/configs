@@ -63,7 +63,7 @@ reflector --verbose --country 'Germany' -l 200 -p https --sort rate --save /etc/
 pacstrap /mnt base base-devel bash-completion dosfstools
 
 # Generate fstab
-genfstap -Lp /mnt >> /mnt/etc/fstab
+genfstab -Lp /mnt >> /mnt/etc/fstab
 
 if [[ $HARDDSIKS == "ssd" ]]
 then
