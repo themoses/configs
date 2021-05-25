@@ -1,4 +1,0 @@
-rofi.modi: window,run,ssh,drun
-rofi.theme: /usr/share/rofi/themes/Pop-Dark.rasi
-rofi.show-icons: true
-rofi.icon-theme: Numix-Circle
