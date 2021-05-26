@@ -32,6 +32,10 @@ setup_rofi(){
         "Ubuntu")
             sudo apt install rofi dconf-tools --yes
         ;;
+
+        *)
+            # do nothing
+        ;;
     esac
 
     mkdir -p ~/.config/rofi/config
@@ -43,7 +47,8 @@ setup_rofi(){
             dconf write /org/mate/desktop/keybindings/custom0/name "'rofi'"
             dconf write /org/mate/desktop/keybindings/custom0/action "'rofi -show drun -display-drun \"\"'"
             dconf write /org/mate/desktop/keybindings/custom0/binding "'<Mod4>space'"
-
+        ;;
+        
         *)
             # do nothing
         ;;
