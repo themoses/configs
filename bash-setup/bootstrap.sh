@@ -3,6 +3,8 @@ set -e
 
 source /etc/lsb-release
 
+ABSOLUTE_PATH="$(pwd)/$(dirname "${BASH_SOURCE[0]}")"
+
 setup_vim(){
     
     case "$DISTRIB_ID" in
@@ -19,7 +21,7 @@ setup_vim(){
         ;;
     esac
 
-    cp vim/.vimrc ~/.vimrc
+    cp "$ABSOLUTE_PATH/vim/.vimrc" ~/.vimrc
 }
 
 setup_rofi(){
@@ -39,7 +41,7 @@ setup_rofi(){
     esac
 
     mkdir -p ~/.config/rofi/config
-    cp rofi/config ~/.config/rofi/config
+    cp "$ABSOLUTE_PATH/rofi/config" ~/.config/rofi/config
 
 # set up key bindings for rofi
     case "$XDG_SESSION_DESKTOP" in
