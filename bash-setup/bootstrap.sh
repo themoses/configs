@@ -30,7 +30,7 @@ setup_rofi(){
         ;;
 
         "Ubuntu")
-            sudo apt install rofi dconf-tools --yes
+            sudo apt install rofi dconf-cli --yes
         ;;
 
         *)
@@ -43,10 +43,16 @@ setup_rofi(){
 
 # set up key bindings for rofi
     case "$XDG_SESSION_DESKTOP" in
-        "mate" | "gnome-xorg")
+        "mate")
             dconf write /org/mate/desktop/keybindings/custom0/name "'rofi'"
             dconf write /org/mate/desktop/keybindings/custom0/action "'rofi -show drun -display-drun \"\"'"
             dconf write /org/mate/desktop/keybindings/custom0/binding "'<Mod4>space'"
+        ;;
+
+        "gnome-xorg")
+            dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name "'rofi'"
+            dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/action "'rofi -show drun -display-drun \"\"'"
+            dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding "'<Mod4>space'"
         ;;
         
         *)
