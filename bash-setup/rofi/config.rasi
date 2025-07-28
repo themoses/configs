@@ -1,8 +1,8 @@
 configuration {
  modi: "drun";
  font: "Noto Sans 10";
- combi-modi: "window, drun, ssh";
+ combi-modi: "window, drun";
  icon-theme: "Numix-Circle";
  show-icons: true;
 }
-@theme "/usr/share/rofi/themes/Pop-Dark.rasi"
+@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
